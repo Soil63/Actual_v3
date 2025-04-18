@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier vos informations</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+      }
+
+      form {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 400px;
+      }
+
+      form button {
+        background-color: white;
+        color: #2575fc;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      form button:hover {
+        background-color: #e0e0e0;
+      }
+
+      a {
+        color: white;
+        text-decoration: underline;
+        margin-top: 20px;
+        display: inline-block;
+      }
+
+      a:hover {
+        color: #d0d0ff;
+      }
+    </style>
+</head>
+<body>
+    <h1>Modifier vos informations</h1>
+
+    {% if messages %}
+      <ul>
+        {% for message in messages %}
+          <li style="color: red; text-align: center;">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Mettre à jour</button>
+    </form>
+
+    <a href="{% url 'espace_perso' %}">Retour à l'espace personnel</a>
+</body>
+</html>
+
+
+

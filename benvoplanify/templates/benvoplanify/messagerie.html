@@ -1,0 +1,30 @@
+<h1>Messagerie</h1>
+
+<!-- Liste des messages reçus -->
+<h2>Messages reçus</h2>
+<ul>
+    {% for message in messages_reçus %}
+    <li>
+        <a href="{% url 'messagerie' message.id %}">
+            {{ message.sender.email }} - {{ message.timestamp|date:"d/m/Y H:i" }}
+            {% if not message.is_read %}<strong>(Non lu)</strong>{% endif %}
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+
+<!-- Détails d'un message -->
+{% if message_detail %}
+<h2>Détails du message</h2>
+<p><strong>De :</strong> {{ message_detail.sender.email }}</p>
+<p><strong>Reçu le :</strong> {{ message_detail.timestamp|date:"d/m/Y H:i" }}</p>
+<p>{{ message_detail.content }}</p>
+{% endif %}
+
+<!-- Formulaire pour envoyer un nouveau message -->
+<h2>Envoyer un nouveau message</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Envoyer</button>
+</form>

@@ -1,0 +1,252 @@
+{% load static %}
+<!--newest version-->
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accueil</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      color: white;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .btn {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn.login {
+      background-color: #ffffff;
+      color: #2575fc;
+    }
+
+    .btn.login:hover {
+      background-color: #e0e0e0;
+    }
+
+    .btn.signup {
+      background-color: #2575fc;
+      color: white;
+      border: 2px solid white;
+    }
+
+    .btn.signup:hover {
+      background-color: #1a5ed9;
+    }
+
+    .btn.espace {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .btn.espace:hover {
+      background-color: #3e8e41;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Bienvenue sur Benvoplanify</h1>
+    {% if user.is_authenticated %}
+      <h2>Bienvenue, {{ user.first_name }} !</h2>
+    {% endif %}
+    <p>Organisez votre semaine facilement et efficacement.</p>
+    <p>Nombre de bénévoles actifs : {{ nb_benevoles }}</p>
+    <div class="btn-group">
+      {% if user.is_authenticated %}
+        <button class="btn espace" onclick="window.location.href='{% url 'espace_perso' %}'">Espace Personnel</button>
+      {% else %}
+        <button class="btn login" onclick="window.location.href='{% url 'login' %}'">Login</button>
+        <button class="btn register" onclick="window.location.href='{% url 'register' %}'">S'inscrire</button>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accueil</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      color: white;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .btn {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn.login {
+      background-color: #ffffff;
+      color: #2575fc;
+    }
+
+    .btn.login:hover {
+      background-color: #e0e0e0;
+    }
+
+    .btn.signup {
+      background-color: #2575fc;
+      color: white;
+      border: 2px solid white;
+    }
+
+    .btn.signup:hover {
+      background-color: #1a5ed9;
+    }
+
+    .btn.espace {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .btn.espace:hover {
+      background-color: #3e8e41;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Bienvenue sur Benvoplanify</h1>
+    {% if user.is_authenticated %}
+      <h2>Bienvenue, {{ user.first_name }} !</h2>
+    {% endif %}
+    <p>Organisez votre semaine facilement et efficacement.</p>
+    <p>Nombre de bénévoles actifs : {{ nb_benevoles }}</p>
+    <div class="btn-group">
+      {% if user.is_authenticated %}
+        <button class="btn espace" onclick="window.location.href='{% url "espace_perso" %}'">Espace Personnel</button>
+      {% else %}
+        <button class="btn login" onclick="window.location.href='{% url "login" %}'">Login</button>
+        <button class="btn register" onclick="window.location.href='{% url "register" %}'">S'inscrire</button>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>-->

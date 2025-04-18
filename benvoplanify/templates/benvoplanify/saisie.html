@@ -1,0 +1,48 @@
+<h1>Saisie des Contraintes et Préférences</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enregistrer</button>
+</form>
+
+<h2>Planning des Permanences</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Créneau</th>
+            <th>Bénévole</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for permanence in planning %}
+        <tr>
+            <td>{{ permanence.date }}</td>
+            <td>{{ permanence.time_slot }}</td>
+            <td>{{ permanence.benevole.nom }} {{ permanence.benevole.prenom }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Conflits</h2>
+<ul>
+    {% for conflict in conflicts %}
+    <li>{{ conflict.date }} - {{ conflict.time_slot }} : Non attribué</li>
+    {% endfor %}
+</ul>
+
+<h2>Solutions Proposées</h2>
+<ul>
+    {% for solution in solutions %}
+    <li>
+        {{ solution.permanence.date }} - {{ solution.permanence.time_slot }}
+        <ul>
+            <li>Solutions possibles :</li>
+            {% for benevole in solution.possible_benevoles %}
+            <li>{{ benevole.nom }} {{ benevole.prenom }}</li>
+            {% endfor %}
+        </ul>
+    </li>
+    {% endfor %}
+</ul>
