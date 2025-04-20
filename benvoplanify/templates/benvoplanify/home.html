@@ -1,252 +1,172 @@
 {% load static %}
-<!--newest version-->
-{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Accueil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    @keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
     }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+    *{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+.banner{
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)),url('{% static "image/track.jpg" %}');
+    background-size: cover;
+    background-position: center;
 
-    body {
-      background: linear-gradient(135deg, #6a11cb, #2575fc);
-      color: white;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+.orange{
+  color: #f1683a;
+}
 
-    .container {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px);
-    }
+.navbar{
+    width: 85%;
+    margin: auto;
+    padding: 35px 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+/*.logo{
+    width: 120px;
+    cursor: pointer;
+}*/
+.navbar ul li{
+    list-style: none;
+    display: inline-block;
+    margin: 0 20px;
+    position: relative;
+}
+.navbar ul li a{
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+}
+.navbar ul li::after{
+    content: '';
+    height: 3px;
+    width: 0;
+    background: #009688;
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    transition: 0.5s;
+}
+.navbar ul li:hover::after{
+    width: 100%;
+}
+.content{
+    width: 60%;
+    position: absolute;
+    top: 40%;
+    /*transform: translateY(-50%);*/
+    left: 30%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #fff;
+}
+.content h1{
+    font-size: 70px;
+    margin-top: 80px;
+    font-family: 'Poppins', sans-serif; /* Police pour les titres */
+    animation: fadeIn 1s ease-in-out;
+    animation-delay: 0.5s; /* Délai pour h1 */
+    animation-fill-mode: both;
+}
 
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 20px;
-    }
-
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 30px;
-    }
-
-    .btn-group {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    .btn {
-      padding: 12px 25px;
-      border: none;
-      border-radius: 30px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .btn.login {
-      background-color: #ffffff;
-      color: #2575fc;
-    }
-
-    .btn.login:hover {
-      background-color: #e0e0e0;
-    }
-
-    .btn.signup {
-      background-color: #2575fc;
-      color: white;
-      border: 2px solid white;
-    }
-
-    .btn.signup:hover {
-      background-color: #1a5ed9;
-    }
-
-    .btn.espace {
-      background-color: #4caf50;
-      color: white;
-    }
-
-    .btn.espace:hover {
-      background-color: #3e8e41;
-    }
-  </style>
+.content h2 {
+    font-size: 2rem;
+    margin-top: 20px;
+    animation: fadeIn 1s ease-in-out;
+    animation-delay: 1s; /* Délai pour h2 */
+    animation-fill-mode: both;
+    
+}
+.content p{
+    margin: 20px auto;
+    font-weight: 100;
+    line-height: 25px;
+    font-family: 'Poppins', sans-serif; /* Police pour les titres */
+    animation: fadeIn 1s ease-in-out;
+    animation-delay: 1.5s; /* Délai pour p */
+    animation-fill-mode: both;
+}
+button{
+    width: 200px;
+    padding: 15px 0;
+    text-align: center;
+    margin: 20px 10px;
+    border-radius: 25px;
+    font-weight: bold;
+    border: 2px solid #009688;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+span{
+    background: #009688;
+    height: 100%;
+    width: 0;
+    border-radius: 25px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: -1;
+    transition: 0.5s;
+}
+button:hover span{
+    width: 100%;
+}
+button:hover{
+    border: none;
+}
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>Bienvenue sur Benvoplanify</h1>
-    {% if user.is_authenticated %}
-      <h2>Bienvenue, {{ user.first_name }} !</h2>
-    {% endif %}
-    <p>Organisez votre semaine facilement et efficacement.</p>
-    <p>Nombre de bénévoles actifs : {{ nb_benevoles }}</p>
-    <div class="btn-group">
-      {% if user.is_authenticated %}
-        <button class="btn espace" onclick="window.location.href='{% url 'espace_perso' %}'">Espace Personnel</button>
-      {% else %}
-        <button class="btn login" onclick="window.location.href='{% url 'login' %}'">Login</button>
-        <button class="btn register" onclick="window.location.href='{% url 'register' %}'">S'inscrire</button>
-      {% endif %}
+  <div class="banner">
+    <div class="navbar">
+      <!--<img src="logo.jpg" class="logo">-->
+      <ul>
+        <!--<li><a href="{% url 'home' %}">Accueil</a></li>-->
+        <li><a href="{% url 'espace_perso' %}">Espace Personnel</a></li>
+        <li><a href="{% url 'login' %}">Login</a></li>
+        <li><a href="{% url 'register' %}">S'inscrire</a></li>
+    </ul>
+    <div class="content">
+        <h1>Bienvenue sur <div class="orange">Benvoplanify</div></h1>
+        {% if user.is_authenticated %}
+          <h2>Bienvenue {{ user.first_name }} !</h2>
+        {% endif %}
+        <p>Organisez votre semaine facilement et efficacement.</p>
+        <p>Nombre de bénévoles actifs : {{ nb_benevoles }}</p>
+        <!--<div class="btn-group">-->
+        <div>
+          {% if user.is_authenticated %}
+            <!--<button type="button" onclick="window.location.href='{% url 'espace_perso' %}'">Espace Personnel</button>-->
+          {% else %}
+            <button type="button" onclick="window.location.href='{% url 'login' %}'">Login</button>
+            <button type="button" onclick="window.location.href='{% url 'register' %}'">S'inscrire</button>
+          {% endif %}
+        </div>
     </div>
+        </div>
+    </div>  
   </div>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Accueil</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body {
-      background: linear-gradient(135deg, #6a11cb, #2575fc);
-      color: white;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .container {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px);
-    }
-
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 20px;
-    }
-
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 30px;
-    }
-
-    .btn-group {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    .btn {
-      padding: 12px 25px;
-      border: none;
-      border-radius: 30px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .btn.login {
-      background-color: #ffffff;
-      color: #2575fc;
-    }
-
-    .btn.login:hover {
-      background-color: #e0e0e0;
-    }
-
-    .btn.signup {
-      background-color: #2575fc;
-      color: white;
-      border: 2px solid white;
-    }
-
-    .btn.signup:hover {
-      background-color: #1a5ed9;
-    }
-
-    .btn.espace {
-      background-color: #4caf50;
-      color: white;
-    }
-
-    .btn.espace:hover {
-      background-color: #3e8e41;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Bienvenue sur Benvoplanify</h1>
-    {% if user.is_authenticated %}
-      <h2>Bienvenue, {{ user.first_name }} !</h2>
-    {% endif %}
-    <p>Organisez votre semaine facilement et efficacement.</p>
-    <p>Nombre de bénévoles actifs : {{ nb_benevoles }}</p>
-    <div class="btn-group">
-      {% if user.is_authenticated %}
-        <button class="btn espace" onclick="window.location.href='{% url "espace_perso" %}'">Espace Personnel</button>
-      {% else %}
-        <button class="btn login" onclick="window.location.href='{% url "login" %}'">Login</button>
-        <button class="btn register" onclick="window.location.href='{% url "register" %}'">S'inscrire</button>
-      {% endif %}
-    </div>
-  </div>
-</body>
-</html>-->

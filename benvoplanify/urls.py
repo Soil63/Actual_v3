@@ -4,25 +4,22 @@ from benvoplanify import views
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('', views.home_view, name='home_view'),  
+    #path('', views.index, name='index'),  # Example root view
+    path('home/', views.home, name='home'), # added
     path('register/', views.register, name='register'),
     path('success/', views.success, name='success'),
     path('espace-personnel/', views.espace_perso, name='espace_perso'),
     path('modifier-benevole/',views.modif_benev, name='modif_benev'),
-    path('login/',views.login_view, name='login'),
+    path('login/',views.login, name='login'),
     path('logout/',views.logout_view,name='logout'),
     
-    #path('messagerie/', views.messagerie, name='messagerie'),
-    #path('messagerie/nouveau/', views.nouveau_message, name='nouveau_message'),
-    #path('messagerie/<int:message_id>/', views.message_detail, name='message_detail'),
+    
+    
 
     path('messagerie/', views.messagerie, name='messagerie'),
     path('messagerie/<int:message_id>/', views.messagerie, name='messagerie'),
 
-    #path('saisie-contraintes/', views.saisie_contraintes, name='saisie_contraintes'),
-    #path('generate-planning/', views.generate_planning, name='generate_planning'),
-    #path('detect-conflicts/', views.detect_conflicts_and_solutions, name='detect_conflicts'),
-
+    
     path('saisie/', views.saisie, name='saisie'),
     
 ]

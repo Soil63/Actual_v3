@@ -1,4 +1,449 @@
-<h1>Saisie des Contraintes et Préférences</h1>
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saisie des Contraintes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      overflow: hidden; /* Supprime la barre de défilement verticale */
+    }
+
+    .banner {
+      width: 100%;
+      min-height: 100vh;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('{% static "image/idle.jpg" %}');
+      background-size: cover;
+      background-position: center;
+      color: white;
+    }
+
+    .navbar {
+      width: 85%;
+      margin: auto;
+      padding: 35px 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .navbar ul li {
+      list-style: none;
+      display: inline-block;
+      margin: 0 20px;
+      position: relative;
+    }
+
+    .navbar ul li a {
+      text-decoration: none;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    .navbar ul li::after {
+      content: '';
+      height: 3px;
+      width: 0;
+      background: #009688;
+      position: absolute;
+      left: 0;
+      bottom: -10px;
+      transition: 0.5s;
+    }
+
+    .navbar ul li:hover::after {
+      width: 100%;
+    }
+
+    .content {
+      width: 60%;
+      position: absolute;
+      top: 80%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #fff;
+    }
+
+    .content h1 {
+      font-size: 50px;
+      margin-bottom: 20px;
+      animation: fadeIn 1s ease-in-out;
+      animation-delay: 0.5s;
+      animation-fill-mode: both;
+    }
+
+    .content h2 {
+      font-size: 2rem;
+      margin-top: 20px;
+      animation: fadeIn 1s ease-in-out;
+      animation-delay: 1s;
+      animation-fill-mode: both;
+    }
+
+    .content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .content table th, .content table td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .content table th {
+      background-color: rgba(255, 255, 255, 0.2);
+      font-weight: bold;
+    }
+
+    .content ul {
+      list-style-type: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    .content ul li {
+      margin: 5px 0;
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    button {
+      width: 200px;
+      padding: 15px 0;
+      text-align: center;
+      margin: 20px 10px;
+      border-radius: 25px;
+      font-weight: bold;
+      border: 2px solid #009688;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button span {
+      background: #009688;
+      height: 100%;
+      width: 0;
+      border-radius: 25px;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      z-index: -1;
+      transition: 0.5s;
+    }
+
+    button:hover span {
+      width: 100%;
+    }
+
+    button:hover {
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <div class="navbar">
+      <ul>
+        <li><a href="{% url 'home' %}">Accueil</a></li>
+        <li><a href="{% url 'espace_perso' %}">Espace Personnel</a></li>
+        <li><a href="{% url 'messagerie' %}">Messagerie</a></li>
+        <li><a href="{% url 'logout' %}">Déconnexion</a></li>
+      </ul>
+    </div>
+    <div class="content">
+      <h1>Saisie des Contraintes et Préférences</h1>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit"><span></span>Enregistrer</button>
+      </form>
+
+      <h2>Planning des Permanences</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Créneau</th>
+            <th>Bénévole</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for permanence in planning %}
+          <tr>
+            <td>{{ permanence.date }}</td>
+            <td>{{ permanence.time_slot }}</td>
+            <td>{{ permanence.benevole.nom }} {{ permanence.benevole.prenom }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <h2>Conflits</h2>
+      <ul>
+        {% for conflict in conflicts %}
+        <li>{{ conflict.date }} - {{ conflict.time_slot }} : Non attribué</li>
+        {% endfor %}
+      </ul>
+
+      <h2>Solutions Proposées</h2>
+      <ul>
+        {% for solution in solutions %}
+        <li>
+          {{ solution.permanence.date }} - {{ solution.permanence.time_slot }}
+          <ul>
+            <li>Solutions possibles :</li>
+            {% for benevole in solution.possible_benevoles %}
+            <li>{{ benevole.nom }} {{ benevole.prenom }}</li>
+            {% endfor %}
+          </ul>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saisie des Contraintes</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      width: 90%;
+      max-width: 1000px;
+    }
+
+    h1, h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    form {
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    form button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 30px;
+      background-color: #4caf50;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    form button:hover {
+      background-color: #3e8e41;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+
+    table th, table td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    table th {
+      background-color: rgba(255, 255, 255, 0.2);
+      font-weight: bold;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    ul li {
+      margin: 5px 0;
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Saisie des Contraintes et Préférences</h1>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Enregistrer</button>
+    </form>
+
+    <h2>Planning des Permanences</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Créneau</th>
+          <th>Bénévole</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for permanence in planning %}
+        <tr>
+          <td>{{ permanence.date }}</td>
+          <td>{{ permanence.time_slot }}</td>
+          <td>{{ permanence.benevole.nom }} {{ permanence.benevole.prenom }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2>Conflits</h2>
+    <ul>
+      {% for conflict in conflicts %}
+      <li>{{ conflict.date }} - {{ conflict.time_slot }} : Non attribué</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Solutions Proposées</h2>
+    <ul>
+      {% for solution in solutions %}
+      <li>
+        {{ solution.permanence.date }} - {{ solution.permanence.time_slot }}
+        <ul>
+          <li>Solutions possibles :</li>
+          {% for benevole in solution.possible_benevoles %}
+          <li>{{ benevole.nom }} {{ benevole.prenom }}</li>
+          {% endfor %}
+        </ul>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</body>
+</html>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<h1>Saisie des Contraintes et Préférences</h1>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
@@ -45,4 +490,4 @@
         </ul>
     </li>
     {% endfor %}
-</ul>
+</ul>-->

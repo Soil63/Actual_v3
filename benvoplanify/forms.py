@@ -19,7 +19,8 @@ class BenevoleForm(forms.ModelForm):
     class Meta:
         model = Benevole
         #fields = ['nom', 'prenom', 'email', 'date_naiss']
-        fields = ['nom', 'prenom', 'email', 'date_naiss', 'constraints', 'preferences', 'phone_number', 'address', 'volontaire_plus']
+        #fields = ['nom', 'prenom', 'email', 'date_naiss', 'constraints', 'preferences', 'phone_number', 'address', 'volontaire_plus']
+        fields = ['nom', 'prenom', 'email', 'date_naiss', 'phone_number', 'address']
         widgets = {
             'date_naiss': forms.DateInput(attrs={'type': 'date'}),
             'constraints': forms.Textarea(attrs={'rows': 3}),

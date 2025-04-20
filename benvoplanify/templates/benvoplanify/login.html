@@ -1,40 +1,97 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Connexion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     * {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Poppins', sans-serif;
     }
 
-    body {
-      background: linear-gradient(135deg, #6a11cb, #2575fc);
+    .banner {
+      width: 100%;
+      min-height: 100vh;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('{% static "image/login.jpg" %}');
+      background-size: cover;
+      background-position: center;
       color: white;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
 
-    .form-container {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    .navbar {
+      width: 85%;
+      margin: auto;
+      padding: 35px 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .navbar ul li {
+      list-style: none;
+      display: inline-block;
+      margin: 0 20px;
+      position: relative;
+    }
+
+    .navbar ul li a {
+      text-decoration: none;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    .navbar ul li::after {
+      content: '';
+      height: 3px;
+      width: 0;
+      background: #009688;
+      position: absolute;
+      left: 0;
+      bottom: -10px;
+      transition: 0.5s;
+    }
+
+    .navbar ul li:hover::after {
+      width: 100%;
+    }
+
+    .content {
       width: 100%;
       max-width: 400px;
-      backdrop-filter: blur(10px);
+      margin: 0 auto;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      color: white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
-    h2 {
-      text-align: center;
-      margin-bottom: 30px;
+    .content h2 {
       font-size: 2rem;
+      margin-bottom: 30px;
+      animation: fadeIn 1s ease-in-out;
+      animation-delay: 0.5s;
+      animation-fill-mode: both;
     }
 
     form p {
@@ -62,19 +119,37 @@
     button[type="submit"] {
       width: 100%;
       padding: 12px;
-      background-color: white;
-      color: #2575fc;
+      background-color: transparent;
+      color: #fff;
       font-weight: bold;
-      border: none;
-      border-radius: 8px;
+      border: 2px solid #009688;
+      border-radius: 25px;
       font-size: 1rem;
       cursor: pointer;
       margin-top: 20px;
-      transition: background-color 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    button[type="submit"] span {
+      background: #009688;
+      height: 100%;
+      width: 0;
+      border-radius: 25px;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      z-index: -1;
+      transition: 0.5s;
+    }
+
+    button[type="submit"]:hover span {
+      width: 100%;
     }
 
     button[type="submit"]:hover {
-      background-color: #e0e0e0;
+      border: none;
     }
 
     .register-link {
@@ -91,36 +166,52 @@
     .register-link a:hover {
       color: #d0d0ff;
     }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    ul li {
+      color: red;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
-
-  <div class="form-container">
-    <h2>Connexion</h2>
-
-    {% if messages %}
+  <div class="banner">
+    <div class="navbar">
       <ul>
-        {% for message in messages %}
-          <li style="color: red; text-align: center;">{{ message }}</li>
-        {% endfor %}
+        <li><a href="{% url 'home' %}">Accueil</a></li>
+        <li><a href="{% url 'register' %}">S'inscrire</a></li>
       </ul>
-    {% endif %}
+    </div>
+    <div class="content">
+      <h2>Connexion</h2>
 
-    {% if user.is_authenticated %}
-      <p style="text-align: center;">Vous êtes déjà connecté. <a href="{% url 'espace_perso' %}" style="color: #fff; text-decoration: underline;">Accéder à votre espace personnel</a></p>
-    {% else %}
-      <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Se connecter</button>
-      </form>
-    {% endif %}
+      {% if messages %}
+        <ul>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
 
-    <div class="register-link">
-      <p>Pas encore de compte ? <a href="{% url 'register' %}" style="color: #fff; font-weight: bold; text-decoration: underline;">S'inscrire <span>&#10148;</span></a></p>
-      <p><a href="{% url 'home_view' %}" style="color: #fff; font-weight: bold; text-decoration: underline;">Retour à l'accueil</a></p>
+      {% if user.is_authenticated %}
+        <p>Vous êtes déjà connecté. <a href="{% url 'espace_perso' %}" style="color: #fff; text-decoration: underline;">Accéder à votre espace personnel</a></p>
+      {% else %}
+        <form method="POST">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit"><span></span>Se connecter</button>
+        </form>
+      {% endif %}
+
+      <div class="register-link">
+        <p>Pas encore de compte ? <a href="{% url 'register' %}">S'inscrire</a></p>
+        <p><a href="{% url 'home' %}">Retour à l'accueil</a></p>
+      </div>
     </div>
   </div>
-
 </body>
 </html>

@@ -1,16 +1,42 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <title>Espace Personnel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Poppins', sans-serif;
     }
+
+    body {
+      overflow: hidden; /* Supprime la barre de défilement verticale */
+    }
+
+    .banner{
+      width: 100%;
+      height: 100vh;
+      background-image: linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)),url('{% static "image/img4.jpg" %}');
+      background-size: cover;
+      background-position: center;
+    }
+
 
     body {
       background: linear-gradient(135deg, #6a11cb, #2575fc);
@@ -29,6 +55,12 @@
       background-color: rgba(255, 255, 255, 0.05);
     }
 
+    .blue {
+      color: rgb(0, 255, 60);
+      margin: 0;
+      padding: 0;
+    }
+
     .menu {
       display: flex;
       gap: 20px;
@@ -37,7 +69,6 @@
     .menu a {
       color: white;
       text-decoration: none;
-      font-weight: bold;
       padding: 8px 16px;
       border-radius: 10px;
       transition: background-color 0.3s ease;
@@ -61,17 +92,107 @@
       padding: 20px;
     }
 
+    .left-side {
+      width: 25%;
+      font-size: 70px;
+      position: absolute;
+      top: 50%;
+      /*transform: translateY(-50%);*/
+      left: 19%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #fff;
+
+    }
+
+    .left-side h1 {
+      font-size: 50px;
+
+    }
+
+    .right-side {
+      width: 60%;
+      position: absolute;
+      top: 80%;
+      left: 80%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #fff;
+      opacity: 0; /* Cache le bloc par défaut */
+      pointer-events: none; /* Empêche les interactions lorsque le bloc est caché */
+      transition: opacity 0.3s ease; /* Ajoute une transition fluide */
+    }
+
+    .right-side:hover {
+      opacity: 1; /* Rend le bloc visible au survol */
+      pointer-events: auto; /* Active les interactions lorsque le bloc est visible */
+    }
+
+    .banner:hover .right-side {
+      opacity: 1; /* Rend le bloc visible lorsque le curseur est sur la bannière */
+      pointer-events: auto;
+    }
+
+    .hover-container {
+      position: relative; /* Nécessaire pour positionner le paragraphe par rapport au conteneur */
+      display: inline-block; /* Limite le survol au conteneur */
+    }
+
+    .hidden-paragraph {
+      opacity: 0; /* Cache le paragraphe par défaut */
+      pointer-events: none; /* Empêche les interactions lorsque le paragraphe est caché */
+      transition: opacity 0.3s ease; /* Transition fluide pour l'apparition */
+    }
+
+    .hover-container:hover .hidden-paragraph {
+      opacity: 1; /* Rend le paragraphe visible au survol */
+      pointer-events: auto; /* Active les interactions lorsque le paragraphe est visible */
+    }
+    
+    
+
     h1 {
       font-size: 2.5rem;
       text-align: center;
       margin-bottom: 20px;
+      animation: fadeIn 1s ease-in-out;
+      animation-delay: 0.5s;
+      animation-fill-mode: both;
     }
 
-    h2 {
-      font-size: 1.8rem;
-      margin-top: 20px;
-      margin-bottom: 10px;
+    
+
+    .bold {
+      font-weight: bold;
+      color: #eeff00;
+      animation: fadeIn 1s ease-in-out;
+      animation-delay: 1.2s;
+      animation-fill-mode: both;
     }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      animation: fadeIn 1s ease-in-out;
+      animation-delay: 1.5s;
+      animation-fill-mode: both;
+    }
+
+
+    .container {
+      width: 60%;
+      top: 80%;
+      /*transform: translateY(-50%);*/
+      left: 80%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #fff;
+    
+    
+    }
+
+    
+    
 
     table {
       width: 80%;
@@ -107,81 +228,88 @@
   </style>
 </head>
 <body>
+  <div class="banner">
+    <header>
+      <div class="left-text">{{ benevole.prenom }} {{ benevole.nom }}</div>
+      <nav class="menu">
+        <a href="{% url 'messagerie' %}">Messagerie</a>
+        <a href="{% url 'modif_benev' %}">Modif_benev</a>
+        <a href="{% url 'saisie' %}">Saisie heures</a>
+        <a href="{% url 'logout' %}">Déconnexion</a>
+      </nav>
+    </header>
 
-  <header>
-    <div class="left-text">{{ benevole.prenom }} {{ benevole.nom }}</div>
-    <nav class="menu">
-      <a href="{% url 'modif_benev' %}">Mes infos</a>
-      <a href="{% url 'logout' %}">Déconnexion</a>
-      <a href="{% url 'messagerie' %}">Messagerie</a>
-      <a href="{% url 'saisie' %}">Saisie heures</a>
-    </nav>
-  </header>
+    <main>
+      <div class="left-side">
+        <h1>Bienvenue sur votre <div class="blue">espace</div> personnel</h1>
+      </div>    
+      <div class="hover-container"><p><span class="bold">Statistiques personnelles:</span> Nombre de permanences effectuées : {{ nb_permanences }}</p></div>
+      <div class="right-side"
+        {% if planning %}
+        <h2>Planning</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Jour</th>
+                <th>Matin</th>
+                <th>Après-midi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for jour, periodes in planning.items %}
+              <tr>
+                <td>{{ jour }}</td>
+                <td>
+                  {% if periodes.Matin %}
+                    {{ periodes.Matin.nom }}
+                  {% else %}
+                    Non assigné
+                  {% endif %}
+                </td>
+                <td>
+                  {% if periodes.Après_midi %}
+                    {{ periodes.Après_midi.nom }}
+                  {% else %}
+                    Non assigné
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p>Aucun planning disponible pour le moment.</p>
+        {% endif %}
 
-  <main>
-    <h1>Bienvenue sur votre espace personnel</h1>
+        <h2>Conflits</h2>
+        {% if conflicts %}
+          <ul>
+            {% for conflict in conflicts %}
+            <li>{{ conflict }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>Aucun conflit détecté.</p>
+        {% endif %}
 
-    <h2>Statistiques personnelles</h2>
-    <p>Nombre de permanences effectuées : {{ nb_permanences }}</p>
-
-    {% if planning %}
-      <h2>Planning</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Jour</th>
-            <th>Matin</th>
-            <th>Après-midi</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for jour, periodes in planning.items %}
-          <tr>
-            <td>{{ jour }}</td>
-            <td>
-              {% if periodes.Matin %}
-                {{ periodes.Matin.nom }}
-              {% else %}
-                Non assigné
-              {% endif %}
-            </td>
-            <td>
-              {% if periodes.Après-midi %}
-                {{ periodes.Après_midi.nom }}
-              {% else %}
-                Non assigné
-              {% endif %}
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    {% else %}
-      <p>Aucun planning disponible pour le moment.</p>
-    {% endif %}
-
-    <h2>Conflits</h2>
-    {% if conflicts %}
-      <ul>
-        {% for conflict in conflicts %}
-        <li>{{ conflict }}</li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p>Aucun conflit détecté.</p>
-    {% endif %}
-
-    <h2>Solutions</h2>
-    {% if solutions %}
-      <ul>
-        {% for solution in solutions %}
-        <li>{{ solution }}</li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p>Aucune solution proposée.</p>
-    {% endif %}
-  </main>
+        <h2>Solutions</h2>
+        {% if solutions %}
+          <ul>
+            {% for solution in solutions %}
+            <li>{{ solution }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>Aucune solution proposée.</p>
+        {% endif %} 
+      </div>  
+    </main>
+  </div>
 
 </body>
 </html>
+
+
+
+
+

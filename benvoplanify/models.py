@@ -64,7 +64,7 @@ class Benevole(models.Model):
     #constraints et preferences :
 #Ces champs permettent de stocker des données structurées (comme des jours ou des heures) sous forme de dictionnaire JSON.
 #Exemple de valeur pour constraints :
-#{"indisponibilites": ["Lundi matin", "Vendredi après-midi"]}
+#{"indisponibilites": ["Lundi matin", "Vendredi après_midi"]}
     constraints = models.JSONField(default=dict, blank=True)  # Stocke les contraintes sous forme de dictionnaire
     preferences = models.JSONField(default=dict, blank=True)  # Stocke les préférences sous forme de dictionnaire
     
@@ -92,7 +92,7 @@ class Benevole(models.Model):
 
 class Permanence(models.Model):
     date = models.DateField()
-    time_slot = models.CharField(max_length=50)  # Matin, Après-midi
+    time_slot = models.CharField(max_length=50)  # Matin, Après_midi
     benevole = models.ForeignKey(Benevole, on_delete=models.SET_NULL, null=True, blank=True)
     is_filled = models.BooleanField(default=False)
     #im not sure about this one

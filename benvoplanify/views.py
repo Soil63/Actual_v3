@@ -18,18 +18,17 @@ from math import ceil
 User = get_user_model()
 
 
-def home_view(request):
+def index(request):
+    return render(request, 'benvoplanify/index.html')
+
+def home(request):
     return render(request,'benvoplanify/home.html')
 
 def success(request):
     return render(request, 'benvoplanify/success.html')
 
 
-'''@login_required
-def espace_perso(request):
-    user = request.user
-    benevole = get_object_or_404(Benevole, user=user)
-    return render(request, 'benvoplanify/espace_perso.html', {'benevole': benevole})'''
+
 
 @login_required
 def espace_perso(request):
@@ -66,19 +65,9 @@ def espace_perso(request):
 
 
 #---------------------------------------------------------------------------------
-'''def login_view(request):
-    if request.method == 'POST':
-        form = CustomAuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            auth_login(request, user)
-            return redirect('espace_perso')
-    else:
-        form = CustomAuthenticationForm()
-    return render(request, 'benvoplanify/login.html', {'form': form})'''
 
-#---------------------------------------------------------------------------------
-'''def login_view(request):
+
+def login(request):
     """Page de connexion avec gestion des erreurs"""
     if request.user.is_authenticated:
         return redirect('espace_perso')  # Redirige si déjà connecté
@@ -88,25 +77,7 @@ def espace_perso(request):
         if form.is_valid():
             user = form.get_user()
             auth_login(request, user)
-            return redirect('espace_perso')  
-        else:
-            messages.error(request, "Nom d'utilisateur ou mot de passe incorrect.")
-    else:
-        form = CustomAuthenticationForm()
-
-    return render(request, 'benvoplanify/login.html', {'form': form})'''
-
-def login_view(request):
-    """Page de connexion avec gestion des erreurs"""
-    if request.user.is_authenticated:
-        return redirect('home_view')  # Redirige si déjà connecté
-
-    if request.method == 'POST':
-        form = CustomAuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            auth_login(request, user)
-            return redirect('home_view')  
+            return redirect('home')  
         else:
             messages.error(request, "Nom d'utilisateur ou mot de passe incorrect.")
     else:
@@ -117,58 +88,16 @@ def login_view(request):
 
 
 #---------------------------------------------------------------------------------
-'''def logout_view(request):
-    auth_logout(request)
-    return redirect('home_view')'''
 
 
 def logout_view(request):
     """Déconnexion de l'utilisateur avec message de confirmation"""
     auth_logout(request)
     messages.success(request, "Vous avez été déconnecté avec succès.")
-    return redirect('home_view')
+    return redirect('home')
 
 #---------------------------------------------------------------------------------
-'''def register(request):
-    if request.method == 'POST':
-        form = CustomUserRegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            Benevole.objects.create(
-                user=user,
-                nom=form.cleaned_data['nom'],
-                prenom=form.cleaned_data['prenom'],
-                email=form.cleaned_data['email'],
-                date_naiss=form.cleaned_data['date_naiss']
-            )
-            auth_login(request, user)
-            return redirect('success')
-    else:
-        form = CustomUserRegistrationForm()
-    return render(request, 'benvoplanify/register.html', {'form': form})'''
 
-'''def register(request):
-    """Inscription utilisateur avec validation et message de bienvenue"""
-    if request.method == 'POST':
-        form = CustomUserRegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save()  
-            Benevole.objects.create(
-                user=user,
-                nom=form.cleaned_data['nom'],
-                prenom=form.cleaned_data['prenom'],
-                email=form.cleaned_data['email'],
-                date_naiss=form.cleaned_data['date_naiss'],
-                constraints=form.cleaned_data.get('constraints', {}),
-                preferences=form.cleaned_data.get('preferences', {}),
-            )
-            auth_login(request, user)
-            messages.success(request, f"Bienvenue {user.first_name} ! Votre compte a été créé avec succès.")
-            return redirect('success')
-    else:
-        form = CustomUserRegistrationForm()
-
-    return render(request, 'benvoplanify/3_register.html', {'form': form})'''
 
 
 def register(request):
@@ -186,7 +115,7 @@ def register(request):
             )
             auth_login(request, user)
             messages.success(request, f"Bienvenue {user.prenom} {user.nom} ! Votre compte a été créé avec succès.")
-            return redirect('home_view')
+            return redirect('home')
     else:
         form = CustomUserRegistrationForm()
 
@@ -194,7 +123,9 @@ def register(request):
 
 
 #---------------------------------------------------------------------------------
-'''@login_required
+
+
+@login_required
 def modif_benev(request):
     user = request.user
     benevole = get_object_or_404(Benevole, user=user)
@@ -207,63 +138,9 @@ def modif_benev(request):
         form = BenevoleForm(instance=benevole)
     return render(request, 'benvoplanify/modif_benev.html', {'form': form})
 
-def success(request):
-    return render(request, 'benvoplanify/success.html')
-
-def home_view(request):
-    return render(request, 'benvoplanify/home.html')'''
-
-
-@login_required
-def modif_benev(request):
-    """Modification des informations utilisateur avec confirmation"""
-    user = request.user
-    benevole = Benevole.objects.get(user=user)
-
-    if request.method == 'POST':
-        form = BenevoleForm(request.POST, instance=benevole)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Vos informations ont été mises à jour avec succès.")
-            return redirect('espace_perso')  
-        else:
-            messages.error(request, "Une erreur est survenue. Veuillez vérifier vos informations.")
-    else:
-        form = BenevoleForm(instance=benevole)
-
-    return render(request, 'benvoplanify/5_modif_benev.html', {'form': form})
-
 
 #---------------------------------------------------------------------------------
-'''@login_required
-def messagerie(request):
-    """Affiche les messages reçus par l'utilisateur connecté"""
-    user = request.user
-    messages_reçus = Message.objects.filter(receiver=user).order_by('-timestamp')
-    return render(request, 'benvoplanify/messagerie.html', {'messages_reçus': messages_reçus})
 
-@login_required
-def nouveau_message(request):
-    """Permet d'envoyer un nouveau message"""
-    if request.method == 'POST':
-        form = MessageForm(request.POST)
-        if form.is_valid():
-            message = form.save(commit=False)
-            message.sender = request.user
-            message.save()
-            messages.success(request, "Message envoyé avec succès.")
-            return redirect('messagerie')
-    else:
-        form = MessageForm()
-    return render(request, 'benvoplanify/nouveau_message.html', {'form': form})
-
-@login_required
-def message_detail(request, message_id):
-    """Affiche le contenu d'un message spécifique"""
-    message = get_object_or_404(Message, id=message_id, receiver=request.user)
-    message.is_read = True
-    message.save()
-    return render(request, 'benvoplanify/message_detail.html', {'message': message})'''
 
 
 @login_required
@@ -299,19 +176,7 @@ def messagerie(request, message_id=None):
         'form': form,
     })
 #---------------------------------------------------------------------------------
-'''@login_required
-def saisie_contraintes(request):
-    """Permet aux bénévoles de saisir leurs contraintes et préférences"""
-    benevole = Benevole.objects.get(user=request.user)
-    if request.method == 'POST':
-        form = BenevoleForm(request.POST, instance=benevole)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Vos contraintes et préférences ont été enregistrées.")
-            return redirect('espace_perso')
-    else:
-        form = BenevoleForm(instance=benevole)
-    return render(request, 'benvoplanify/saisie_contraintes.html', {'form': form})'''
+
 
 @login_required
 def saisie_contraintes(request):
@@ -372,7 +237,7 @@ def generate_planning(benevoles, mois):
                     permanence.is_filled = True
                     permanence.save()
                     break
-                elif permanence.time_slot == "Après-midi" and not planning[jour]["Apres_midi"]:
+                elif permanence.time_slot == {{"Après_midi"}} and not planning[jour]["Apres_midi"]:
                     planning[jour]["Apres_midi"] = permanence
                     permanence.benevole = benevole
                     permanence.is_filled = True
