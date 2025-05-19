@@ -1,0 +1,24 @@
+<div class="banner">
+  <div class="navbar">
+    <ul>
+      <li><a routerLink="/home">Accueil</a></li>
+      <li><a routerLink="/espace-perso">Espace Personnel</a></li>
+      <li><a routerLink="/logout">Déconnexion</a></li>
+    </ul>
+  </div>
+  <div class="content">
+    <h2>Modifier mes informations</h2>
+
+    <form (ngSubmit)="onSubmit()">
+      <div *ngFor="let field of formFields">
+        <label [for]="field.name">{{ field.label }}</label>
+        <input [type]="field.type" [id]="field.name" [(ngModel)]="field.value" [name]="field.name" required />
+      </div>
+      <button type="submit"><span></span>Enregistrer</button>
+    </form>
+
+    <div class="back-link">
+      <p><a routerLink="/espace-perso">Retour à l'espace personnel</a></p>
+    </div>
+  </div>
+</div>

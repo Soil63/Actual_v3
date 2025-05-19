@@ -55,7 +55,7 @@ ROOT_URLCONF = 'projet_l2ab.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'benvoplanify/templates'],
+        'DIRS': [],  # Removed reference to the 'templates' directory
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'projet_l2ab.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'base',
+        'USER': 'postgres',
+        'PASSWORD': 'database',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 

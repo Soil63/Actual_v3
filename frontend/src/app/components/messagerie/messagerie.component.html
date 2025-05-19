@@ -1,0 +1,23 @@
+<div class="banner">
+  <div class="navbar">
+    <ul>
+      <li><a routerLink="/home">Accueil</a></li>
+      <li><a routerLink="/espace-perso">Espace Personnel</a></li>
+      <li><a routerLink="/logout">Déconnexion</a></li>
+    </ul>
+  </div>
+  <div class="content">
+    <h2>Messagerie</h2>
+
+    <div class="messages">
+      <div *ngFor="let message of messages" class="message">
+        <p><strong>{{ message.sender }}</strong>: {{ message.content }}</p>
+      </div>
+    </div>
+
+    <form (ngSubmit)="sendMessage()">
+      <textarea [(ngModel)]="newMessage" name="newMessage" placeholder="Écrivez votre message ici..." required></textarea>
+      <button type="submit"><span></span>Envoyer</button>
+    </form>
+  </div>
+</div>

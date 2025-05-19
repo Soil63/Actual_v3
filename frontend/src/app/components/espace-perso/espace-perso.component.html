@@ -1,0 +1,19 @@
+<div class="banner">
+  <div class="navbar">
+    <ul>
+      <li><a routerLink="/home">Accueil</a></li>
+      <li><a routerLink="/messagerie">Messagerie</a></li>
+      <li><a routerLink="/logout">Déconnexion</a></li>
+    </ul>
+  </div>
+  <div class="content">
+    <h2>Espace Personnel</h2>
+
+    <p>Bienvenue, {{ user?.firstName }} !</p>
+
+    <div class="actions">
+      <button (click)="navigateTo('planning')">Voir le planning</button>
+      <button (click)="navigateTo('modif_benev')">Modifier mes informations</button>
+    </div>
+  </div>
+</div>

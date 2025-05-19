@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accueil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="app.component.css">
+</head>
+<body>
+  <div class="banner">
+    <div class="navbar">
+      <ul>
+        <li><a href="/espace_perso">Espace Personnel</a></li>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/register">S'inscrire</a></li>
+      </ul>
+    </div>
+    <div class="content">
+      <h1>Bienvenue sur <span class="orange">Benvoplanify</span></h1>
+      <p>Organisez votre semaine facilement et efficacement.</p>
+      <p>Nombre de bénévoles actifs : {{ nb_benevoles }}</p>
+      <div>
+        <button type="button" onclick="window.location.href='/login'">Login</button>
+        <button type="button" onclick="window.location.href='/register'">S'inscrire</button>
+      </div>
+    </div>
+  </div>
+  <router-outlet></router-outlet>
+</body>
+</html>
